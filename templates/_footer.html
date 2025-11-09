@@ -1,0 +1,35 @@
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-widget">
+                <h4>MAROGO Civils Ltd.</h4>
+                <p>Your trusted partner in construction and civil engineering, building Malawi's future with integrity and innovation since 2018.</p>
+            </div>
+            <div class="footer-widget">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('services') }}">Services</a></li>
+                    <li><a href="{{ url_for('projects') }}">Projects</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-widget">
+                <h4>Contact Info</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Lilongwe, Malawi</p>
+                <p><i class="fas fa-phone"></i> +265 992 211 629</p>
+                <p><i class="fas fa-envelope"></i> info@marogocivils.com</p>
+            </div>
+            <div class="footer-widget">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© {{ now.year }} MAROGO Civils Limited. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>

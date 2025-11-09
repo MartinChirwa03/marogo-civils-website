@@ -1,0 +1,193 @@
+{% extends "admin/layout_admin.html" %}
+{% set content_title = content_type.replace('_', ' ').title() %}
+{% block title %}Edit {{ content_title[:-1] }}{% endblock %}
+{% block page_title %}Edit {{ content_title[:-1] }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Editing: {{ item.title or item.author or item.name }}</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% if content_type == 'projects' %}
+                <label for="title">Project Title</label>
+                <input type="text" name="title" value="{{ item.title }}" required>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <label for="client">Client Name</label>
+                        <input type="text" name="client" value="{{ item.client or '' }}">
+                    </div>
+                    <div>
+                        <label for="location">Location</label>
+                        <input type="text" name="location" value="{{ item.location or '' }}">
+                    </div>
+                    <div>
+                        <label for="project_value">Project Value</label>
+                        <input type="text" name="project_value" value="{{ item.project_value or '' }}">
+                    </div>
+                    <div>
+                        <label for="completion_date">Completion Date</label>
+                        <input type="text" name="completion_date" value="{{ item.completion_date or '' }}">
+                    </div>
+                </div>
+
+                <label for="details">Project Details & Scope</label>
+                <textarea name="details" class="tinymce-editor">{{ item.details or '' }}</textarea>
+
+                <label for="category">Category</label>
+                <select name="category" required>
+                    <option value="Building Construction" {% if item.category == 'Building Construction' %}selected{% endif %}>Building Construction</option>
+                    <option value="Solar Systems" {% if item.category == 'Solar Systems' %}selected{% endif %}>Solar Systems</option>
+                    <option value="Irrigation" {% if item.category == 'Irrigation' %}selected{% endif %}>Irrigation & Water Supply</option>
+                    <option value="Drainage" {% if item.category == 'Drainage' %}selected{% endif %}>Drainage Systems</option>
+                    <option value="Surveying" {% if item.category == 'Surveying' %}selected{% endif %}>Land Surveying</option>
+                    <option value="Fabrication" {% if item.category == 'Fabrication' %}selected{% endif %}>Welding & Fabrication</option>
+                    <option value="General Construction" {% if item.category == 'General Construction' %}selected{% endif %}>General Construction</option>
+                </select>
+
+                <label for="project_image">Main Project Image (Featured Image)</label>
+                {% if item.image_url %}
+                <p>Current image: <strong>{{ item.image_url }}</strong></p>
+                <img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="Current Image" width="200" style="margin-bottom: 15px; border-radius: 5px;">
+                {% endif %}
+                <p class="form-hint">Upload a new image to replace the current featured image (optional).</p>
+                <input type="file" name="project_image" accept="image/png, image/jpeg, image/jpg">
+                
+                <hr style="margin: 30px 0;">
+
+                <label>Project Gallery</label>
+                <p class="form-hint" style="margin-top: -6px;">These images will appear in the gallery on the project detail page.</p>
+                
+                {% if item.images %}
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #dee2e6;">
+                    {% for img in item.images %}
+                    <div style="position: relative; text-align: center;">
+                        <img src="{{ url_for('uploaded_file', filename=img.image_url) }}" alt="Gallery thumbnail" width="120" height="80" style="object-fit: cover; border-radius: 5px;">
+                        <div style="margin-top: 5px;">
+                            <input type="checkbox" name="delete_images" value="{{ img.id }}" id="delete_{{ img.id }}">
+                            <label for="delete_{{ img.id }}" style="font-weight: normal; font-size: 0.9em; cursor: pointer;">Delete</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p><em>No gallery images have been uploaded for this project yet.</em></p>
+                {% endif %}
+
+                <label for="gallery_images">Add More Images to Gallery</label>
+                <input type="file" name="gallery_images" accept="image/png, image/jpeg, image/jpg" multiple>
+                <p class="form-hint">You can select multiple files at once by holding Ctrl (or Cmd on Mac) while clicking.</p>
+
+            {% elif content_type == 'blog' %}
+                <label for="title">Post Title</label>
+                <input type="text" name="title" value="{{ item.title }}" required>
+                <label for="content">Content</label>
+                <textarea name="content" class="tinymce-editor" required>{{ item.content }}</textarea>
+            {% elif content_type == 'testimonials' %}
+                <label for="author">Author (Client Name)</label>
+                <input type="text" name="author" value="{{ item.author }}" required>
+                <label for="position">Position (e.g., CEO, Company)</label>
+                <input type="text" name="position" value="{{ item.position }}">
+                <label for="quote">Quote</label>
+                <textarea name="quote" required>{{ item.quote }}</textarea>
+            {% elif content_type == 'statistics' %}
+                <label for="name">Statistic Name</label>
+                <input type="text" name="name" value="{{ item.name }}" required>
+
+                <label for="value">Value</label>
+                <input type="number" name="value" value="{{ item.value }}" required min="0">
+
+                {# <<< UPDATED: Replaced text input with a dropdown and live preview >>> #}
+                <label for="icon">Font Awesome Icon</label>
+                <div>
+                    <select name="icon" class="icon-select" required>
+                        <option value="" disabled>-- Select an Icon --</option>
+                        {% for icon in fa_icons %}
+                        <option value="{{ icon.class }}" {% if icon.class == item.icon %}selected{% endif %}>
+                            {{ icon.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <span class="icon-preview"><i class="{{ item.icon }}"></i></span>
+                </div>
+                <p class="form-hint">The selected icon will appear on the homepage.</p>
+
+                <label for="order_num">Display Order</label>
+                <input type="number" name="order_num" value="{{ item.order_num }}" required>
+            {% elif content_type == 'team_members' %}
+                <label for="name">Full Name</label>
+                <input type="text" name="name" value="{{ item.name }}" required>
+                <label for="position">Position / Title</label>
+                <input type="text" name="position" value="{{ item.position }}" required>
+                <label for="bio">Short Bio / Expertise</label>
+                <textarea name="bio">{{ item.bio or '' }}</textarea>
+                <label for="member_image">Team Member Photo</label>
+                {% if item.image_url %}
+                <p>Current photo:</p>
+                <img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="{{ item.name }}" width="100" height="100" style="object-fit: cover; border-radius: 50%; margin-bottom: 15px;">
+                {% endif %}
+                <p class="form-hint">Upload a new photo to replace the current one (optional).</p>
+                <input type="file" name="member_image" accept="image/png, image/jpeg, image/jpg">
+                <label for="order_num">Display Order</label>
+                <input type="number" name="order_num" value="{{ item.order_num }}" required>
+            {% elif content_type == 'services' %}
+                <label for="title">Service Title</label>
+                <input type="text" name="title" value="{{ item.title }}" required>
+                <label for="service_thumbnail_image">Service Thumbnail Image</label>
+                {% if item.image_url %}
+                <p>Current thumbnail: <strong>{{ item.image_url }}</strong></p>
+                <img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="Current Service Thumbnail" width="80" height="80" style="object-fit: contain; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ddd; padding: 2px;">
+                {% endif %}
+                <p class="form-hint">Upload a new image to replace the current thumbnail (optional). Recommended size: max 150x150px.</p>
+                <input type="file" name="service_thumbnail_image" accept="image/png, image/jpeg, image/jpg">
+
+                <label for="summary">Summary (for the main services page)</label>
+                <textarea name="summary" required maxlength="255" rows="3">{{ item.summary }}</textarea>
+                <p class="form-hint">A brief, one-sentence summary. Max 255 characters.</p>
+                <label for="full_content">Full Content (for the detail page)</label>
+                <textarea name="full_content" class="tinymce-editor">{{ item.full_content }}</textarea>
+
+                <label for="service_header_image">Service Header Image (Banner for detail page)</label>
+                {% if item.header_image_url %}
+                <p>Current image: <strong>{{ item.header_image_url }}</strong></p>
+                <img src="{{ url_for('uploaded_file', filename=item.header_image_url) }}" alt="Current Service Header Image" width="250" style="margin-bottom: 15px; border-radius: 5px;">
+                {% endif %}
+                <p class="form-hint">Upload a new image to replace the current header image (optional). Recommended size: 1920x400px.</p>
+                <input type="file" name="service_header_image" accept="image/png, image/jpeg, image/jpg">
+
+                <label for="project_category_link">Link to Project Category</label>
+                <select id="project_category_link" name="project_category_link">
+                    <option value="">-- No specific project category --</option>
+                    {% for category in project_categories %}
+                        <option value="{{ category }}" {% if category == item.project_category_link %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                </select>
+                <p class="form-hint">Select a project category to display relevant projects on this service's detail page. If none selected, the service title will be used.</p>
+
+                <label for="order_num">Display Order</label>
+                <input type="number" name="order_num" value="{{ item.order_num }}" required>
+            {% elif content_type == 'certifications' %}
+                <label for="name">Certification / License Name</label>
+                <input type="text" name="name" value="{{ item.name }}" required>
+                <label for="issuing_body">Issuing Body (e.g., NCIC)</label>
+                <input type="text" name="issuing_body" value="{{ item.issuing_body or '' }}">
+                <label for="certification_image">Certificate Image</label>
+                {% if item.image_url %}
+                <p>Current image: <strong>{{ item.image_url }}</strong></p>
+                <img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="Current Certificate Image" width="100" style="margin-bottom: 15px; border-radius: 5px;">
+                {% endif %}
+                <p class="form-hint">Upload a new image to replace the current certificate image (optional). Recommended size: max 200x200px.</p>
+                <input type="file" name="certification_image" accept="image/png, image/jpeg, image/jpg">
+                <label for="order_num">Display Order</label>
+                <input type="number" name="order_num" value="{{ item.order_num }}" required>
+            {% endif %}
+            <div style="margin-top: 20px;">
+                <button type="submit" class="btn-primary-admin">Save Changes</button>
+                <a href="{{ url_for('manage_content', content_type=content_type) }}" style="margin-left: 10px; text-decoration: none; color: #6c757d;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

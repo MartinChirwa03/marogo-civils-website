@@ -1,0 +1,59 @@
+<header class="main-header">
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span><i class="fas fa-phone"></i> Call Us Now +265 992 211 629</span>
+                <span class="hide-on-mobile"><i class="fas fa-clock"></i> Mon - Fri: 9:00 - 18:30</span>
+            </div>
+            <div class="email-info">
+                <span><i class="fas fa-envelope"></i> info@marogocivils.com</span>
+            </div>
+        </div>
+    </div>
+    <nav class="main-nav">
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="MAROGO Civils Limited Logo">
+            </a>
+
+            <!-- === DESKTOP NAVIGATION === -->
+            <ul class="nav-menu-desktop">
+                <li><a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}class="active"{% endif %}>Home</a></li>
+                <li><a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}class="active"{% endif %}>About Us</a></li>
+                <li><a href="{{ url_for('services') }}" {% if request.endpoint in ['services', 'service_detail'] %}class="active"{% endif %}>Our Services</a></li>
+                <li><a href="{{ url_for('projects') }}" {% if request.endpoint in ['projects', 'project_detail'] %}class="active"{% endif %}>Projects</a></li>
+                <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog', 'blog_post'] %}class="active"{% endif %}>Blog</a></li>
+                <li><a href="{{ url_for('contact') }}" {% if request.endpoint == 'contact' %}class="active"{% endif %}>Contact Us</a></li>
+            </ul>
+            <a href="{{ url_for('contact') }}" class="btn btn-primary nav-quote">
+                Get A Quote <i class="fas fa-arrow-right"></i>
+            </a>
+
+            <!-- === MOBILE MENU TOGGLE (HAMBURGER) === -->
+            <button class="mobile-menu-toggle" aria-label="Open Menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+</header>
+
+<!-- === MOBILE NAVIGATION DRAWER === -->
+<div class="mobile-nav-drawer">
+    <div class="mobile-nav-header">
+        <a href="{{ url_for('home') }}" class="mobile-logo">
+             <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="MAROGO Civils Limited Logo">
+        </a>
+        <button class="mobile-menu-close" aria-label="Close Menu">×</button>
+    </div>
+    <ul class="mobile-nav-menu">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About Us</a></li>
+        <li><a href="{{ url_for('services') }}">Our Services</a></li>
+        <li><a href="{{ url_for('projects') }}">Projects</a></li>
+        <li><a href="{{ url_for('blog') }}">Blog</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+    </ul>
+    <!-- === FOOTER WITH CTA BUTTON === -->
+    <div class="mobile-nav-footer">
+        <a href="{{ url_for('contact') }}" class="btn btn-primary">Get a Quote</a>
+    </div>
+</div>
+<div class="nav-overlay"></div>

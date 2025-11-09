@@ -1,0 +1,75 @@
+{% extends "admin/layout_admin.html" %}
+{% block title %}View Submission - {{ submission.name }}{% endblock %}
+{% block page_title %}Contact Submission Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-envelope"></i> Message from {{ submission.name }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="submission-details">
+            <p><strong>Name:</strong> {{ submission.name }}</p>
+            <p><strong>Email:</strong> <a href="mailto:{{ submission.email }}">{{ submission.email }}</a></p>
+            <p><strong>Subject:</strong> {{ submission.subject }}</p>
+            <p><strong>Date:</strong> {{ submission.submitted_on.strftime('%B %d, %Y at %H:%M') }}</p>
+            <hr>
+            <h4>Message:</h4>
+            <div class="submission-message">
+                <p>{{ submission.message }}</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <a href="{{ url_for('dashboard') }}" class="btn-secondary-admin">← Back to Dashboard</a>
+            <form action="{{ url_for('delete_content', content_type='submissions', item_id=submission.id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this submission permanently?');" style="margin: 0;">
+                <button type="submit" class="btn-danger">Delete Submission</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Add some basic styling for the view_submission page */
+    .submission-details p {
+        margin-bottom: 10px;
+        font-size: 1em;
+    }
+    .submission-details strong {
+        color: var(--primary-blue-dark);
+        margin-right: 5px;
+    }
+    .submission-details a {
+        color: var(--accent-red); /* Using admin red accent */
+        text-decoration: none;
+    }
+    .submission-details a:hover {
+        text-decoration: underline;
+    }
+    .submission-message {
+        background-color: var(--admin-bg); /* Using admin background color */
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid var(--card-border);
+        white-space: pre-wrap; /* Preserve whitespace and line breaks */
+        word-wrap: break-word; /* Break long words */
+        line-height: 1.6;
+        font-size: 1.05em;
+    }
+    .btn-secondary-admin { /* Basic style for a secondary admin button */
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 1em;
+        text-decoration: none;
+        display: inline-block;
+        line-height: 1.5; /* Align with primary button */
+    }
+    .btn-secondary-admin:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}

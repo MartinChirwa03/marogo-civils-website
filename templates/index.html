@@ -1,0 +1,208 @@
+{% extends "layout.html" %}
+{% block title %}MAROGO Civils Limited - Your Digital Blueprint for Success{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="fade-in">BUILDING MALAWI'S FUTURE, TODAY</h1>
+        <p class="fade-in" style="transition-delay: 0.2s;">Expert Construction & Civil Engineering Solutions Tailored for Success</p>
+        <div class="hero-buttons fade-in" style="transition-delay: 0.4s;">
+            <a href="{{ url_for('services') }}" class="btn btn-primary">Our Services</a>
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary">Contact Us</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Snippet -->
+<section class="about-snippet-section section-padding">
+    <div class="container text-center">
+        <div class="section-title fade-in">
+            <h2>About MAROGO Civils Limited</h2>
+            <div class="title-underline"></div>
+        </div>
+        <p class="company-description fade-in">
+            Since 2018, MAROGO Civils has been a trusted, Malawian-owned leader in construction and civil engineering. Our classification in the <strong>500 million Kwacha category</strong> by the NCIC reflects our commitment to quality, integrity, and building a stronger Malawi.
+        </p>
+        <a href="{{ url_for('about') }}" class="btn btn-primary slide-up">Learn More About Us</a>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-choose-us-section section-padding bg-light">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Why Choose Marogo Civils?</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-item slide-up">
+                <i class="fas fa-award"></i>
+                <h3>Quality Commitment</h3>
+                <p>We use the highest quality materials and craftsmanship to deliver durable and lasting results on every project.</p>
+            </div>
+            <div class="feature-item slide-up" style="transition-delay: 0.2s;">
+                <i class="fas fa-clock"></i>
+                <h3>On-Time Delivery</h3>
+                <p>Our superior project management ensures your project is completed on schedule and within budget.</p>
+            </div>
+            <div class="feature-item slide-up" style="transition-delay: 0.4s;">
+                <i class="fas fa-hard-hat"></i>
+                <h3>Safety First Culture</h3>
+                <p>We enforce the strictest safety protocols to protect our team, our clients, and the public.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS COUNTER SECTION (NOW DYNAMIC) -->
+<section class="stats-section section-padding" style="background-image: linear-gradient(rgba(26, 54, 93, 0.9), rgba(26, 54, 93, 0.9)), url({{ url_for('static', filename='images/civil.jpg') }});">
+    <div class="container">
+        <div class="stats-grid">
+            {% for stat in statistics %}
+            <div class="stat-item fade-in" style="transition-delay: {{ loop.index0 * 0.2 }}s;">
+                <i class="{{ stat.icon }}"></i>
+                <h3 class="stat-number" data-target="{{ stat.value }}">{{ stat.value }}</h3>
+                <p>{{ stat.name }}</p>
+            </div>
+            {% else %}
+            <p class="text-center" style="color: white; width: 100%;">No statistics configured yet. Please add them in the admin panel.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section section-padding">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>WE ARE EXPERTS IN</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="services-grid">
+            <div class="service-card slide-up"><i class="fas fa-hard-hat"></i><h3>Building Construction</h3></div>
+            <div class="service-card slide-up"><i class="fas fa-solar-panel"></i><h3>Solar System Design & Installation</h3></div>
+            <div class="service-card slide-up"><i class="fas fa-water"></i><h3>Irrigation & Water Supply</h3></div>
+            <div class="service-card slide-up"><i class="fas fa-road"></i><h3>Drainage System Design</h3></div>
+            <div class="service-card slide-up"><i class="fas fa-map-marked-alt"></i><h3>Land Surveying & Mapping</h3></div>
+            <div class="service-card slide-up"><i class="fas fa-tools"></i><h3>Welding & Fabrication</h3></div>
+        </div>
+         <div class="text-center slide-up" style="margin-top: 3rem;">
+            <a href="{{ url_for('services') }}" class="btn btn-secondary">View All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section class="projects-section section-padding bg-light">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Our Recent Projects</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="projects-grid">
+            {% for project in projects %}
+            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-card-link slide-up">
+                <div class="project-card">
+                    <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" loading="lazy">
+                    <div class="project-info">
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.details | striptags | truncate(100) }}</p>
+                    </div>
+                </div>
+            </a>
+            {% else %}
+            <p class="text-center">No projects to display yet. Check back soon!</p>
+            {% endfor %}
+        </div>
+        <div class="text-center slide-up" style="margin-top: 3rem;">
+             <a href="{{ url_for('projects') }}" class="btn btn-primary">View All Projects</a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section section-padding">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>What Our Clients Say</h2>
+            <div class="title-underline"></div>
+        </div>
+
+        <div class="testimonial-carousel-wrapper slide-in-left">
+            <div class="testimonial-carousel">
+                {% for testimonial in testimonials %}
+                <div class="testimonial-item" data-testimonial-index="{{ loop.index0 }}">
+                    <p class="quote">"{{ testimonial.quote }}"</p>
+                    <div class="author">
+                        <strong>{{ testimonial.author }}</strong>
+                        <span>{{ testimonial.position }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-center" style="width: 100%;">No testimonials to display yet.</p>
+                {% endfor %}
+            </div>
+
+            <div class="testimonial-dots"></div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Clients Section -->
+<section class="clients-section section-padding bg-light">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Trusted By</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="clients-grid">
+            {% for logo in client_logos %}
+            <div class="client-logo-item slide-up" style="transition-delay: {{ loop.index0 * 0.05 }}s;">
+                {% if logo.website_url %}
+                <a href="{{ logo.website_url }}" target="_blank" rel="noopener noreferrer" title="{{ logo.name }}">
+                    <img src="{{ url_for('uploaded_file', filename=logo.image_url) }}" alt="{{ logo.name }} Logo" loading="lazy">
+                </a>
+                {% else %}
+                    <img src="{{ url_for('uploaded_file', filename=logo.image_url) }}" alt="{{ logo.name }} Logo" loading="lazy">
+                {% endif %}
+            </div>
+            {% else %}
+            <p class="text-center" style="grid-column: 1 / -1;">Our partners and clients will be featured here soon.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Blog Snippet Section -->
+<section class="blog-snippet-section section-padding">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>From Our Blog</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="blog-grid">
+             {% for post in blog_posts %}
+             <article class="blog-post-card slide-up">
+                 <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="fas fa-calendar-alt"></i> {{ post.date_posted.strftime('%B %d, %Y') }}</span>
+                        <span><i class="fas fa-user"></i> By {{ post.author }}</span>
+                    </div>
+                    <h3><a href="{{ url_for('blog_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                    <p>{{ post.content | striptags | truncate(150) }}</p>
+                    <a href="{{ url_for('blog_post', post_id=post.id) }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                 </div>
+             </article>
+             {% else %}
+             <p class="text-center">No blog posts available.</p>
+             {% endfor %}
+        </div>
+        <div class="text-center slide-up" style="margin-top: 3rem;">
+             <a href="{{ url_for('blog') }}" class="btn btn-secondary">Visit Our Blog</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

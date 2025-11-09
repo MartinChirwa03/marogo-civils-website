@@ -1,0 +1,361 @@
+/* --- Admin Panel Styles --- */
+:root {
+    --admin-bg: #f8f9fa;
+    --sidebar-bg-start: #2c3e50;
+    --sidebar-bg-end: #34495e;
+    --sidebar-text: rgba(255, 255, 255, 0.8);
+    --sidebar-text-hover: #ffffff;
+    --sidebar-active-bg: #e74c3c;
+    --sidebar-hover-bg: rgba(0, 0, 0, 0.2);
+    --accent-red: #e74c3c;
+    --primary-blue: #2980b9;
+    --primary-blue-dark: #1a365d;
+    --card-border: #dee2e6;
+    --card-header-bg: #f1f5f9;
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--admin-bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #212529;
+    margin: 0;
+}
+
+.admin-container {
+    display: flex;
+}
+
+/* === Sidebar === */
+.admin-sidebar {
+    width: 250px;
+    background: linear-gradient(180deg, var(--sidebar-bg-start), var(--sidebar-bg-end));
+    color: var(--sidebar-text);
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+/* <<< NEW: Styles for the branded sidebar header >>> */
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.sidebar-header a {
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.sidebar-logo {
+    height: 60px; /* Adjust size as needed */
+    width: auto;
+    /* This CSS trick makes your color logo appear white on the dark background */
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+.sidebar-header span {
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+}
+
+.admin-nav {
+    flex-grow: 1;
+    margin-top: 10px; /* Add some space below the header */
+}
+.admin-nav .nav-link {
+    color: var(--sidebar-text);
+    display: flex;
+    align-items: center;
+    padding: 13px 25px;
+    text-decoration: none;
+    margin: 4px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.95em;
+}
+.admin-nav .nav-link:hover {
+    background-color: var(--sidebar-hover-bg);
+    color: var(--sidebar-text-hover);
+}
+.admin-nav .nav-link.active {
+    background-color: var(--sidebar-active-bg);
+    color: var(--sidebar-text-hover);
+    font-weight: 600;
+}
+.admin-nav .nav-link i {
+    margin-right: 15px;
+    width: 20px;
+    text-align: center;
+    font-size: 1.1em;
+}
+.logout-link {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+.admin-main {
+    flex-grow: 1;
+    padding: 30px;
+    margin-left: 250px;
+}
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--card-border);
+}
+.admin-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--primary-blue-dark);
+}
+.user-info {
+    font-size: 0.9rem;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.card-header {
+    padding: 1rem 1.25rem;
+    margin-bottom: 0;
+    background-color: var(--card-header-bg);
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.card-body {
+    padding: 1.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+.stat-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid var(--card-border);
+}
+.stat-card .icon {
+    font-size: 2rem;
+    color: var(--primary-blue);
+    background-color: #eaf3fb;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.stat-card .number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-blue-dark);
+    line-height: 1;
+}
+.stat-card .title {
+    color: #6c757d;
+    margin-top: 3px;
+}
+
+/* Table styles */
+.table-responsive {
+    overflow-x: auto;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+.table th, .table td {
+    padding: 12px 15px;
+    border-top: 1px solid var(--card-border);
+    text-align: left;
+    vertical-align: middle;
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid var(--card-border);
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.btn-edit, .btn-danger {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+    text-decoration: none;
+    color: white;
+}
+.btn-edit {
+    background-color: #007bff;
+}
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+.btn-danger {
+    background-color: #dc3545;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-primary-admin {
+    background-color: var(--primary-blue-dark);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1em;
+}
+.btn-primary-admin:hover {
+    background-color: #2d5a87;
+}
+
+/* === Form Styles (Refined) === */
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    text-align: left; /* Ensure labels are left-aligned */
+}
+form input[type="text"],
+form input[type="number"],
+form input[type="file"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.95em;
+}
+form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+form p.form-hint {
+    font-size: 0.85em;
+    color: #888;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    text-align: left; /* Ensure hints are left-aligned */
+}
+
+/* Login Page Specific */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--admin-bg);
+}
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    text-align: center; /* <<< UPDATED */
+}
+
+/* <<< NEW: Styles for the logo on the login page >>> */
+.login-logo {
+    margin-bottom: 30px;
+}
+.login-logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+.login-form h2 {
+    color: var(--primary-blue-dark);
+    margin-bottom: 30px;
+}
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+.login-form .btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-red);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.login-form .btn-login:hover {
+    background-color: #b91c1c;
+}
+
+/* TinyMCE Dark Mode Fix (if applicable) */
+.tox-tinymce {
+    border-radius: 4px !important;
+}
+
+/* --- Icon Select Dropdown Styles --- */
+.icon-select {
+    display: inline-block;
+    width: auto;
+    min-width: 300px;
+    vertical-align: middle;
+}
+.icon-preview {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+    font-size: 1.5em;
+    color: var(--primary-blue);
+    width: 25px;
+    text-align: center;
+}

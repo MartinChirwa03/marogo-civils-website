@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %} - Marogo Civils</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="{{ url_for('dashboard') }}">
+                    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="sidebar-logo">
+                    <span>MAROGO ADMIN</span>
+                </a>
+            </div>
+            <nav class="admin-nav">
+                <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{{ url_for('manage_content', content_type='projects') }}" class="nav-link {% if 'projects' in request.path %}active{% endif %}"><i class="fas fa-hard-hat"></i> Manage Projects</a>
+                <a href="{{ url_for('manage_content', content_type='blog') }}" class="nav-link {% if 'blog' in request.path %}active{% endif %}"><i class="fas fa-blog"></i> Manage Blog</a>
+                <a href="{{ url_for('manage_content', content_type='testimonials') }}" class="nav-link {% if 'testimonials' in request.path %}active{% endif %}"><i class="fas fa-comment-dots"></i> Manage Testimonials</a>
+                <a href="{{ url_for('manage_content', content_type='statistics') }}" class="nav-link {% if 'statistics' in request.path %}active{% endif %}"><i class="fas fa-chart-bar"></i> Manage Statistics</a>
+                <a href="{{ url_for('manage_content', content_type='team_members') }}" class="nav-link {% if 'team_members' in request.path %}active{% endif %}"><i class="fas fa-users-cog"></i> Manage Team</a>
+                <a href="{{ url_for('manage_content', content_type='client_logos') }}" class="nav-link {% if 'client_logos' in request.path %}active{% endif %}"><i class="fas fa-handshake"></i> Manage Clients</a>
+                <a href="{{ url_for('manage_content', content_type='certifications') }}" class="nav-link {% if 'certifications' in request.path %}active{% endif %}"><i class="fas fa-award"></i> Manage Certifications</a>
+                <a href="{{ url_for('manage_content', content_type='services') }}" class="nav-link {% if 'services' in request.path %}active{% endif %}"><i class="fas fa-concierge-bell"></i> Manage Services</a>
+                <a href="{{ url_for('logout') }}" class="nav-link logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>{% block page_title %}{% endblock %}</h1>
+                <div class="user-info">
+                    Welcome, <strong>{{ session.username }}</strong>!
+                </div>
+            </header>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- TinyMCE Rich Text Editor Script -->
+    <script src="https://cdn.tiny.cloud/1/ohhc492tt237dmbyey6x4g78kwan4w8adpebntok942sti65/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+      tinymce.init({
+        selector: 'textarea.tinymce-editor',
+        plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+        toolbar: 'undo redo | blocks | bold italic backcolor | ' +
+                 'alignleft aligncenter alignright alignjustify | ' +
+                 'bullist numlist outdent indent | removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+        height: 350,
+      });
+    </script>
+    
+    {% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const iconSelects = document.querySelectorAll('.icon-select');
+            
+            iconSelects.forEach(select => {
+                const preview = select.nextElementSibling;
+                if (preview && preview.classList.contains('icon-preview')) {
+                    select.addEventListener('change', function() {
+                        const iconTag = document.createElement('i');
+                        iconTag.className = this.value;
+                        preview.innerHTML = '';
+                        preview.appendChild(iconTag);
+                    });
+                }
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>

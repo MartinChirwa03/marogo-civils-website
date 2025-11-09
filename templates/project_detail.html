@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+{% block title %}{{ project.title }} - Our Projects{% endblock %}
+
+{% block content %}
+<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('uploaded_file', filename=project.image_url) }}); background-position: center;">
+    <div class="container fade-in">
+        <h1>{{ project.title }}</h1>
+        <p>{{ project.location }}</p>
+    </div>
+</section>
+
+<div class="project-detail-section section-padding">
+    <div class="container">
+        <div class="project-detail-grid">
+            <!-- Main Content Area -->
+            <div class="project-main-content slide-in-left">
+                
+                {# <<< UPDATED: Dynamic Project Image Gallery >>> #}
+                <div class="project-gallery">
+                    <img id="main-project-image" src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }} - Main View">
+                    <div class="thumbnail-container">
+                        <!-- The first thumbnail is the main project image and is active by default. -->
+                        <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }} - Featured Thumbnail" class="thumbnail active" loading="lazy">
+                        
+                        {# Loop through the gallery images from the database #}
+                        {% for image in project.images %}
+                        <img src="{{ url_for('uploaded_file', filename=image.image_url) }}" alt="{{ project.title }} - Gallery Thumbnail" class="thumbnail" loading="lazy">
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <h2>Project Overview</h2>
+                <!-- We use the |safe filter to render the HTML from the Rich Text Editor -->
+                <div class="project-details-body">
+                    {{ project.details | safe }}
+                </div>
+            </div>
+
+            <!-- Sidebar with Key Facts -->
+            <aside class="project-sidebar slide-in-right">
+                <div class="sidebar-widget">
+                    <h3>Project Facts</h3>
+                    <ul>
+                        <li><strong>Client:</strong> {{ project.client or 'N/A' }}</li>
+                        <li><strong>Location:</strong> {{ project.location or 'N/A' }}</li>
+                        <li><strong>Value:</strong> {{ project.project_value or 'N/A' }}</li>
+                        <li><strong>Completed:</strong> {{ project.completion_date or 'N/A' }}</li>
+                        <li><strong>Category:</strong> {{ project.category }}</li>
+                    </ul>
+                </div>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">Start Your Project</a>
+            </aside>
+        </div>
+        <hr style="margin: 60px 0;">
+        <a href="{{ url_for('projects') }}" class="btn btn-secondary">← Back to All Projects</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    .project-detail-grid {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 50px;
+    }
+    .project-details-body {
+        line-height: 1.8;
+        color: #555;
+    }
+    .project-details-body h3, .project-details-body h4 {
+        color: var(--primary-blue-dark);
+        margin-top: 1.5em;
+    }
+    .sidebar-widget {
+        background: var(--light-gray);
+        padding: 25px;
+        border-radius: 8px;
+    }
+    .sidebar-widget h3 {
+        margin-top: 0;
+        border-bottom: 2px solid var(--accent-red-light);
+        padding-bottom: 10px;
+    }
+    .sidebar-widget ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .sidebar-widget ul li {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+    .sidebar-widget ul li:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .sidebar-widget ul li strong {
+        color: var(--primary-blue-dark);
+    }
+
+    /* === Gallery Styles === */
+    .project-gallery { 
+        margin-bottom: 40px; 
+    }
+    #main-project-image {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+    }
+    .thumbnail-container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .thumbnail-container .thumbnail {
+        width: 120px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 5px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: border-color 0.3s, transform 0.3s;
+    }
+    .thumbnail-container .thumbnail.active, 
+    .thumbnail-container .thumbnail:hover {
+        border-color: var(--accent-red-light);
+        transform: scale(1.05);
+    }
+    
+    @media (max-width: 992px) {
+        .project-detail-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainImage = document.getElementById('main-project-image');
+        const thumbnails = document.querySelectorAll('.thumbnail-container .thumbnail');
+
+        if (mainImage && thumbnails.length > 0) {
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    // Set the main image src to the clicked thumbnail's src
+                    mainImage.src = this.src;
+
+                    // Update the 'active' class
+                    const currentActive = document.querySelector('.thumbnail.active');
+                    if (currentActive) {
+                        currentActive.classList.remove('active');
+                    }
+                    this.classList.add('active');
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

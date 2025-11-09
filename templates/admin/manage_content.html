@@ -1,0 +1,240 @@
+{% extends "admin/layout_admin.html" %}
+{% set content_title = content_type.replace('_', ' ').title() %}
+{% block title %}Manage {{ content_title }}{% endblock %}
+{% block page_title %}Manage {{ content_title }}{% endblock %}
+
+{% block content %}
+
+<!-- Form for Adding New Content -->
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-plus-circle"></i> Add New {{ content_title[:-1] }}</h3>
+    </div>
+    <div class="card-body">
+        <form action="{{ url_for('manage_content', content_type=content_type) }}" method="post" enctype="multipart/form-data">
+            {% if content_type == 'projects' %}
+                <label for="title">Project Title</label>
+                <input type="text" id="title" name="title" required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div><label for="client">Client Name</label><input type="text" id="client" name="client"></div>
+                    <div><label for="location">Location</label><input type="text" id="location" name="location"></div>
+                    <div><label for="project_value">Project Value (e.g., 500M Kwacha)</label><input type="text" id="project_value" name="project_value"></div>
+                    <div><label for="completion_date">Completion Date (e.g., June 2024)</label><input type="text" id="completion_date" name="completion_date"></div>
+                </div>
+                <label for="details">Project Details & Scope</label>
+                <textarea id="details" name="details" class="tinymce-editor"></textarea>
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="Building Construction">Building Construction</option>
+                    <option value="Solar Systems">Solar Systems</option>
+                    <option value="Irrigation">Irrigation & Water Supply</option> <!-- Value is "Irrigation" -->
+                    <option value="Drainage">Drainage Systems</option>             <!-- Value is "Drainage" -->
+                    <option value="Surveying">Land Surveying</option>              <!-- Value is "Surveying" -->
+                    <option value="Fabrication">Welding & Fabrication</option>     <!-- Value is "Fabrication" -->
+                    <option value="General Construction">General Construction</option>
+                </select>
+                <label for="project_image">Main Project Image (Featured Image)</label>
+                <input type="file" id="project_image" name="project_image" accept="image/png, image/jpeg, image/jpg" required>
+                <p class="form-hint">A gallery can be added after the project is created by editing it.</p>
+            {% elif content_type == 'blog' %}
+                <label for="title">Post Title</label>
+                <input type="text" id="title" name="title" required>
+                <label for="content">Content</label>
+                <textarea id="content" name="content" class="tinymce-editor"></textarea>
+            {% elif content_type == 'testimonials' %}
+                <label for="author">Author (Client Name)</label>
+                <input type="text" id="author" name="author" required>
+                <label for="position">Position (e.g., CEO, Company)</label>
+                <input type="text" id="position" name="position">
+                <label for="quote">Quote</label>
+                <textarea id="quote" name="quote" required></textarea>
+            {% elif content_type == 'statistics' %}
+                <label for="name">Statistic Name (e.g., Projects Completed)</label>
+                <input type="text" id="name" name="name" required>
+                <label for="value">Value</label>
+                <input type="number" id="value" name="value" required min="0">
+                <label for="icon">Font Awesome Icon</label>
+                <div>
+                    <select id="icon" name="icon" class="icon-select" required>
+                        <option value="" disabled selected>-- Select an Icon --</option>
+                        {% for icon in fa_icons %}<option value="{{ icon.class }}">{{ icon.name }}</option>{% endfor %}
+                    </select>
+                    <span class="icon-preview"></span>
+                </div>
+                <p class="form-hint">The selected icon will appear on the homepage.</p>
+                <label for="order_num">Display Order</label>
+                <input type="number" id="order_num" name="order_num" required value="0">
+                <p class="form-hint">Lower numbers appear first on the homepage.</p>
+            {% elif content_type == 'team_members' %}
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="position">Position / Title</label>
+                <input type="text" id="position" name="position" required>
+                <label for="bio">Short Bio / Expertise</label>
+                <textarea id="bio" name="bio"></textarea>
+                <label for="member_image">Team Member Photo</label>
+                <input type="file" id="member_image" name="member_image" accept="image/png, image/jpeg, image/jpg" required>
+                <label for="order_num">Display Order</label>
+                <input type="number" id="order_num" name="order_num" required value="0">
+                <p class="form-hint">Lower numbers appear first.</p>
+            {% elif content_type == 'services' %}
+                <label for="title">Service Title</label>
+                <input type="text" id="title" name="title" required>
+                <label for="service_thumbnail_image">Service Thumbnail Image</label>
+                <input type="file" id="service_thumbnail_image" name="service_thumbnail_image" accept="image/png, image/jpeg, image/jpg" required>
+                <p class="form-hint">Upload a small image to represent this service on the main services page. Recommended size: max 150x150px (will be cropped/scaled to fit).</p>
+
+                <label for="summary">Summary (for the main services page)</label>
+                <textarea id="summary" name="summary" required maxlength="255" rows="3"></textarea>
+                <p class="form-hint">A brief, one-sentence summary. Max 255 characters.</p>
+                <label for="full_content">Full Content (for the detail page)</label>
+                <textarea id="full_content" name="full_content" class="tinymce-editor"></textarea>
+                
+                <label for="service_header_image">Service Header Image (Banner for detail page)</label>
+                <input type="file" id="service_header_image" name="service_header_image" accept="image/png, image/jpeg, image/jpg">
+                <p class="form-hint">This image will appear as the background banner on the individual service detail page. Recommended size: 1920x400px.</p>
+
+                <label for="project_category_link">Link to Project Category</label>
+                <select id="project_category_link" name="project_category_link">
+                    <option value="" selected>-- No specific project category --</option>
+                    {% for category in project_categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+                <p class="form-hint">Select a project category to display relevant projects on this service's detail page. If none selected, the service title will be used.</p>
+
+                <label for="order_num">Display Order</label>
+                <input type="number" id="order_num" name="order_num" required value="0">
+                <p class="form-hint">Lower numbers appear first on the services page.</p>
+            
+            {% elif content_type == 'client_logos' %}
+                <label for="name">Client Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="website_url">Client Website URL (Optional)</label>
+                <input type="text" id="website_url" name="website_url" placeholder="e.g., https://www.clientwebsite.com">
+                <label for="logo_image">Client Logo</label>
+                <input type="file" id="logo_image" name="logo_image" accept="image/png, image/jpeg, image/jpg, image/svg+xml" required>
+                <p class="form-hint">Use a transparent PNG or SVG for best results.</p>
+                <label for="order_num">Display Order</label>
+                <input type="number" id="order_num" name="order_num" required value="0">
+                <p class="form-hint">Lower numbers appear first.</p>
+
+            {% elif content_type == 'certifications' %}
+                <label for="name">Certification / License Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="issuing_body">Issuing Body (e.g., NCIC)</label>
+                <input type="text" id="issuing_body" name="issuing_body">
+                <label for="certification_image">Certificate Image</label>
+                <input type="file" id="certification_image" name="certification_image" accept="image/png, image/jpeg, image/jpg" required>
+                <p class="form-hint">Upload the official certificate image. Recommended size: max 200x200px (will be resized for display).</p>
+                <label for="order_num">Display Order</label>
+                <input type="number" id="order_num" name="order_num" required value="0">
+
+            {% endif %}
+            <button type="submit" class="btn-primary-admin" style="margin-top:15px;">Add {{ content_title[:-1] }}</button>
+        </form>
+    </div>
+</div>
+
+<!-- Table of Existing Content -->
+<div class="card" style="margin-top: 40px;">
+    <div class="card-header"><h3><i class="fas fa-list"></i> Existing {{ content_title }}</h3></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% if content_type == 'statistics' %}
+                            <th>Order</th><th>Name</th><th>Value</th><th>Icon</th><th>Actions</th>
+                        {% elif content_type == 'team_members' %}
+                            <th>Order</th><th>Photo</th><th>Name</th><th>Position</th><th>Actions</th>
+                        {% elif content_type == 'services' %}
+                            <th>Order</th><th>Thumbnail</th><th>Title</th><th>Summary</th><th>Actions</th>
+                        {% elif content_type == 'client_logos' %}
+                            <th>Order</th><th>Logo</th><th>Name</th><th>Website</th><th>Actions</th>
+                        {% elif content_type == 'certifications' %}
+                            <th>Order</th><th>Image</th><th>Name</th><th>Issuing Body</th><th>Actions</th>
+                        {% else %}
+                            <th>Title / Author</th><th>Content Snippet</th><th>Date</th><th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        {% if content_type == 'statistics' %}
+                            <td>{{ item.order_num }}</td><td>{{ item.name }}</td><td>{{ item.value }}</td><td><i class="{{ item.icon }}"></i> {{ item.icon }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('edit_content', content_type=content_type, item_id=item.id) }}" class="btn-edit">Edit</a>
+                                    <form action="{{ url_for('delete_content', content_type=content_type, item_id=item.id) }}" method="post" onsubmit="return confirm('Are you sure?');" style="margin: 0;"><button type="submit" class="btn-danger">Delete</button></form>
+                                </div>
+                            </td>
+                        {% elif content_type == 'team_members' %}
+                            <td>{{ item.order_num }}</td><td><img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="{{ item.name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"></td><td>{{ item.name }}</td><td>{{ item.position }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('edit_content', content_type=content_type, item_id=item.id) }}" class="btn-edit">Edit</a>
+                                    <form action="{{ url_for('delete_content', content_type=content_type, item_id=item.id) }}" method="post" onsubmit="return confirm('Are you sure?');" style="margin: 0;"><button type="submit" class="btn-danger">Delete</button></form>
+                                </div>
+                            </td>
+                        {% elif content_type == 'services' %}
+                            <td>{{ item.order_num }}</td>
+                            <td>
+                                {% if item.image_url %}
+                                    <img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="{{ item.title }} Thumbnail" style="max-height: 50px; max-width: 50px; object-fit: contain; padding: 2px; border: 1px solid #ddd; border-radius: 4px;">
+                                {% else %}
+                                    <span style="color: #888;">No Image</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.summary | truncate(80) }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('edit_content', content_type=content_type, item_id=item.id) }}" class="btn-edit">Edit</a>
+                                    <form action="{{ url_for('delete_content', content_type=content_type, item_id=item.id) }}" method="post" onsubmit="return confirm('Are you sure?');" style="margin: 0;"><button type="submit" class="btn-danger">Delete</button></form>
+                                </div>
+                            </td>
+                        {% elif content_type == 'client_logos' %}
+                            <td>{{ item.order_num }}</td>
+                            <td><img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="{{ item.name }}" style="max-height: 40px; max-width: 100px; background: #eee; padding: 5px; border-radius: 4px;"></td>
+                            <td>{{ item.name }}</td>
+                            <td><a href="{{ item.website_url }}" target="_blank">{{ item.website_url }}</a></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('edit_content', content_type=content_type, item_id=item.id) }}" class="btn-edit">Edit</a>
+                                    <form action="{{ url_for('delete_content', content_type=content_type, item_id=item.id) }}" method="post" onsubmit="return confirm('Are you sure?');" style="margin: 0;"><button type="submit" class="btn-danger">Delete</button></form>
+                                </div>
+                            </td>
+                        {% elif content_type == 'certifications' %}
+                            <td>{{ item.order_num }}</td>
+                            <td><img src="{{ url_for('uploaded_file', filename=item.image_url) }}" alt="{{ item.name }}" style="max-height: 50px; max-width: 50px; object-fit: contain; padding: 2px; border: 1px solid #ddd; border-radius: 4px;"></td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.issuing_body }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('edit_content', content_type=content_type, item_id=item.id) }}" class="btn-edit">Edit</a>
+                                    <form action="{{ url_for('delete_content', content_type=content_type, item_id=item.id) }}" method="post" onsubmit="return confirm('Are you sure?');" style="margin: 0;"><button type="submit" class="btn-danger">Delete</button></form>
+                                </div>
+                            </td>
+                        {% else %}
+                            <td>{{ item.title or item.author }}</td>
+                            <td>{{ (item.details or item.content or item.quote) | striptags | truncate(80) }}</td>
+                            <td>{{ item.date_posted.strftime('%Y-%m-%d') if 'date_posted' in item.__table__.columns else 'N/A' }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('edit_content', content_type=content_type, item_id=item.id) }}" class="btn-edit">Edit</a>
+                                    <form action="{{ url_for('delete_content', content_type=content_type, item_id=item.id) }}" method="post" onsubmit="return confirm('Are you sure?');" style="margin: 0;"><button type="submit" class="btn-danger">Delete</button></form>
+                                </div>
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" style="text-align: center;">No items found. Add one above to get started!</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

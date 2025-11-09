@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+{% block title %}Our Projects - MAROGO Civils Limited{% endblock %}
+
+{% block content %}
+<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('static', filename='images/construction.jpg')}});">
+    <div class="container">
+        <h1>Our Showcase of Work</h1>
+        <p>A Portfolio of Excellence and Precision</p>
+    </div>
+</section>
+
+<section class="projects-section section-padding">
+    <div class="container">
+        <div id="project-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Building Construction">Building Construction</button>
+            <button class="filter-btn" data-filter="Solar Systems">Solar Systems</button>
+            <button class="filter-btn" data-filter="Irrigation">Irrigation</button>
+            <button class="filter-btn" data-filter="Drainage">Drainage</button>
+            <button class="filter-btn" data-filter="Surveying">Surveying</button>
+            <button class="filter-btn" data-filter="Fabrication">Fabrication</button>
+            <button class="filter-btn" data-filter="General Construction">General</button>
+        </div>
+
+        <div class="projects-grid" id="projects-container">
+            {% for project in projects %}
+            <!-- This entire block is now a clickable link -->
+            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-card-link">
+                <div class="project-card filterable-item" data-category="{{ project.category }}">
+                    {# <<< UPDATED: Added loading="lazy" for performance #}
+                    <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" loading="lazy">
+                    <div class="project-info">
+                        <h3>{{ project.title }}</h3>
+                        <!-- This now correctly uses 'details' and strips HTML for a clean summary -->
+                        <p>{{ project.details | striptags | truncate(100) }}</p>
+                        <span class="project-category-badge">{{ project.category }}</span>
+                    </div>
+                </div>
+            </a>
+            {% else %}
+            <p class="text-center">No projects to display yet. Check back soon!</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    /* This makes the link fill the card and removes the default underline */
+    .project-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block; /* Important for the link to take up the full card space */
+    }
+
+    /* Filter Buttons Styling */
+    #project-filters {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .filter-btn {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        color: #444;
+        padding: 8px 20px;
+        margin: 5px;
+        border-radius: 20px; /* Pill shape */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-size: 0.9em;
+        -webkit-appearance: none; /* Override default iOS styles */
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .filter-btn:hover {
+        background-color: #f0f0f0;
+        border-color: #aaa;
+    }
+
+    .filter-btn.active {
+        background-color: var(--primary-blue-dark);
+        color: white;
+        border-color: var(--primary-blue-dark);
+    }
+    
+    /* Improved Project Card and Grid Styling */
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    .project-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex; 
+        flex-direction: column; 
+        height: 100%; /* Ensures all cards in a row have the same height */
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .project-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+    
+    /* Overriding the hover effect for the info on this page to always be visible */
+    .projects-section .project-info {
+        position: static;
+        transform: none;
+        background: #fff;
+        color: var(--text-color);
+        padding: 20px;
+        flex-grow: 1; /* Allows this section to grow and fill space */
+    }
+
+    .projects-section .project-info p {
+        opacity: 1;
+        font-size: 0.9em;
+        color: #666;
+    }
+    
+    .project-category-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: var(--accent-red-light);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8em;
+        font-weight: 600;
+        z-index: 3;
+    }
+
+    .project-card.hidden {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+</style>
+{% endblock %}

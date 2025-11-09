@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}{{ post.title }} - Marogo Civils Blog{% endblock %}
+
+{% block content %}
+<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('static', filename='images/water.webp') }});">
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+    </div>
+</section>
+
+<div class="section-padding">
+    <div class="container">
+        <div class="post-full-content">
+            <div class="post-meta">
+                <span><i class="fas fa-calendar-alt"></i> {{ post.date_posted.strftime('%B %d, %Y') }}</span>
+                <span><i class="fas fa-user"></i> By {{ post.author }}</span>
+            </div>
+            <hr>
+            <!-- === THIS IS THE CRUCIAL CHANGE to render HTML correctly === -->
+            <div class="post-body">
+                {{ post.content | safe }}
+            </div>
+            <hr>
+            <a href="{{ url_for('blog') }}" class="btn btn-secondary" style="margin-top: 20px;">← Back to All Posts</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .post-full-content {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 40px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border-radius: 8px;
+    }
+    .post-body {
+        font-size: 1.1em;
+        line-height: 1.8;
+        padding: 20px 0;
+    }
+    /* Style for content coming from the editor */
+    .post-body h1, .post-body h2, .post-body h3 {
+        color: var(--primary-blue-dark);
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+    }
+    .post-body p {
+        margin-bottom: 1em;
+    }
+    .post-body ul, .post-body ol {
+        padding-left: 2em;
+        margin-bottom: 1em;
+    }
+    .post-body a {
+        color: var(--accent-red-light);
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

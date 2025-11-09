@@ -1,0 +1,205 @@
+{% extends "layout.html" %}
+{% block title %}{{ service.title }} - Our Services{% endblock %}
+
+{% block content %}
+<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('uploaded_file', filename=service.header_image_url) if service.header_image_url else url_for('static', filename='images/civil.jpg') }});">
+    <div class="container fade-in">
+        <p style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Our Services</p>
+        <h1>{{ service.title }}</h1>
+    </div>
+</section>
+
+<div class="service-detail-section section-padding">
+    <div class="container">
+        <div class="service-detail-grid">
+            <!-- Main Content Area -->
+            <div class="service-main-content slide-in-left">
+                <div class="service-content-body">
+                    {# The |safe filter renders the HTML content from your rich text editor #}
+                    {{ service.full_content | safe }}
+                </div>
+            </div>
+
+            <!-- Sidebar with other services -->
+            <aside class="service-sidebar slide-in-right">
+                <div class="sidebar-widget">
+                    <h3>Need Our Expertise?</h3>
+                    <p>Ready to start your next project? Contact us today for a consultation and let's build something great together.</p>
+                     <a href="{{ url_for('contact') }}" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">Get a Quote</a>
+                </div>
+            </aside>
+        </div>
+        <hr style="margin: 60px 0;">
+        <a href="{{ url_for('services') }}" class="btn btn-secondary">← Back to All Services</a>
+    </div>
+</div>
+
+{# === NEW SECTION: RELATED PROJECTS === #}
+<section class="related-projects-section section-padding bg-light">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Our Work in {{ service.title }}</h2>
+            <div class="title-underline"></div>
+            <p>See some of our key projects that demonstrate our expertise in this area.</p>
+        </div>
+
+        <div class="projects-grid">
+            {% for project in related_projects %}
+            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-card-link slide-up">
+                <div class="project-card">
+                    <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" loading="lazy">
+                    <div class="project-info">
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.details | striptags | truncate(100) }}</p>
+                        <span class="project-category-badge">{{ project.category }}</span>
+                    </div>
+                </div>
+            </a>
+            {% else %}
+            <div class="text-center" style="grid-column: 1 / -1; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                <i class="fas fa-search-dollar" style="font-size: 3rem; color: var(--accent-red-light); margin-bottom: 20px;"></i>
+                <p style="font-size: 1.1rem; color: #666;">No specific projects found for "{{ service.title }}" yet. Please check our <a href="{{ url_for('projects') }}" style="color: var(--primary-blue-dark); text-decoration: underline;">full portfolio</a> for more examples.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center slide-up" style="margin-top: 3rem;">
+             <a href="{{ url_for('projects') }}" class="btn btn-secondary">View All Projects</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    .service-detail-grid {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 50px;
+    }
+    .service-content-body {
+        line-height: 1.8;
+        color: #555;
+    }
+    .service-content-body h2, .service-content-body h3, .service-content-body h4 {
+        color: var(--primary-blue-dark);
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+    }
+    .service-content-body p {
+        margin-bottom: 1em;
+    }
+    .service-content-body ul, .service-content-body ol {
+        padding-left: 2em;
+        margin-bottom: 1em;
+    }
+    .service-content-body a {
+        color: var(--accent-red-light);
+        text-decoration: underline;
+    }
+    .sidebar-widget {
+        background: var(--light-gray);
+        padding: 30px;
+        border-radius: 8px;
+    }
+    .sidebar-widget h3 {
+        margin-top: 0;
+        border-bottom: 2px solid var(--accent-red-light);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    .sidebar-widget p {
+        line-height: 1.7;
+    }
+
+    /* === Project Card Styles (Copied from style.css for local use, ideally these are shared) === */
+    .related-projects-section .section-title {
+        margin-bottom: 50px; /* Adjust spacing */
+    }
+    .related-projects-section .section-title h2 {
+        font-size: 2.2rem;
+    }
+    .related-projects-section .section-title p {
+        font-size: 1rem;
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .project-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .project-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex; 
+        flex-direction: column; 
+        height: 100%;
+        background-color: var(--white); /* Ensure cards have white background */
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .project-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+    
+    .project-info { /* This styling applies to .project-info within any .project-card */
+        position: static;
+        transform: none;
+        background: #fff;
+        color: var(--text-color);
+        padding: 20px;
+        flex-grow: 1;
+    }
+
+    .project-info p {
+        opacity: 1;
+        font-size: 0.9em;
+        color: #666;
+    }
+    
+    .project-category-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: var(--accent-red-light);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8em;
+        font-weight: 600;
+        z-index: 3;
+    }
+    /* === END Related Projects Section Styles === */
+
+     @media (max-width: 992px) {
+        .service-detail-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    // Any page-specific JavaScript for service_detail.html
+    // For instance, if you want a special animation or interaction here.
+</script>
+{% endblock %}

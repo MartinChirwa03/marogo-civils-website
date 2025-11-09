@@ -1,0 +1,1190 @@
+{% extends "layout.html" %}
+{% block title %}About Us - MAROGO Civils Limited{% endblock %}
+
+{% block content %}
+<style>
+    /* Global Styles & Variables (Keep these as they are or move to style.css) */
+    :root {
+        --primary-blue-dark: #1A365D; /* Deep Corporate Blue */
+        --primary-blue-light: #365B8B; /* Lighter Blue */
+        --accent-red-light: #DC2626; /* Vibrant Red for accents */
+        --accent-red-dark: #B91C1C; /* Darker Red */
+        --text-dark: #333;
+        --text-light: #666;
+        --bg-light: #f8f9fa;
+        --bg-white: #ffffff;
+        --border-color: #e0e0e0;
+        --shadow-light: rgba(0, 0, 0, 0.08);
+        --shadow-medium: rgba(0, 0, 0, 0.15);
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif; /* Or your preferred professional font */
+        color: var(--text-dark);
+        line-height: 1.6;
+        background-color: var(--bg-light);
+    }
+
+    /* Utility Classes (Keep these as they are or move to style.css) */
+    .section-padding {
+        padding: 80px 0; /* Consistent vertical padding for sections */
+    }
+
+    .bg-light {
+        background-color: var(--bg-light);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px; /* Horizontal padding for responsiveness */
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+        font-size: 2.8rem;
+        color: var(--primary-blue-dark);
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .section-title p {
+        font-size: 1.1rem;
+        color: var(--text-light);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .title-underline {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-red-light), var(--primary-blue-dark));
+        margin: 20px auto 0;
+        border-radius: 2px;
+    }
+
+    /* Scroll Animation Classes (Keep these as they are or move to style.css) */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .slide-up {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .slide-in-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .slide-in-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .visible {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Header Slideshow (Keep these as they are or move to style.css) */
+    .page-header-slideshow {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .slideshow-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 2s ease-in-out;
+        will-change: opacity; /* Optimize for animation */
+    }
+
+    .slide.active {
+        opacity: 1;
+    }
+
+    .header-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(26, 54, 93, 0.85), rgba(185, 28, 28, 0.45)); /* Richer gradient */
+        z-index: 2;
+    }
+
+    .header-content {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        color: white;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .header-content h1 {
+        font-size: 4.5rem; /* Larger font */
+        margin-bottom: 20px;
+        font-weight: 800; /* Bolder */
+        text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+        color: white;
+    }
+
+    .header-content p {
+        font-size: 1.6rem; /* Larger */
+        margin-bottom: 30px;
+        text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.4);
+        font-weight: 300; /* Lighter weight */
+    }
+
+    .header-divider {
+        width: 120px; /* Slightly wider */
+        height: 4px; /* Thicker */
+        background: var(--accent-red-light);
+        margin: 25px auto;
+        border-radius: 2px;
+    }
+
+    .header-subtitle {
+        font-size: 1.25rem; /* Larger */
+        font-weight: 600;
+        opacity: 0.95;
+    }
+
+    .scroll-indicator {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+        color: white;
+        font-size: 2rem; /* Larger icon */
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+        40% { transform: translateX(-50%) translateY(-15px); } /* More prominent bounce */
+        60% { transform: translateX(-50%) translateY(-7px); }
+    }
+
+    /* Enhanced Story Section */
+    .story-section {
+        background: linear-gradient(135deg, var(--bg-light) 0%, #e9ecef 100%);
+    }
+
+    .story-intro {
+        margin-bottom: 80px;
+    }
+
+    .story-lead {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 700px;
+        margin: 30px auto 0;
+        line-height: 1.8;
+    }
+
+    .story-timeline {
+        position: relative;
+        margin: 60px 0;
+    }
+
+    .story-timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, var(--accent-red-light), var(--primary-blue-dark));
+        transform: translateX(-50%);
+        z-index: 0; /* Changed to 0: This is the background line, it should be behind other elements */
+    }
+
+    .timeline-item {
+        position: relative; /* Crucial for absolute positioning of child elements relative to it */
+        margin: 80px 0; /* More spacing */
+        display: flex; /* Keep flexbox for horizontal alignment of content */
+        align-items: center;
+        justify-content: center; /* This centers the flex content, but icon is absolute */
+        z-index: 1; /* Added z-index: 1 to ensure the item and its children are above the timeline line */
+    }
+
+    .timeline-item:nth-child(odd) {
+        flex-direction: row-reverse; /* Reverses the order of flex items (content then icon) */
+    }
+
+    .timeline-icon {
+        width: 90px; /* Larger icon */
+        height: 90px;
+        background: linear-gradient(135deg, var(--accent-red-light), var(--accent-red-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2.2rem; /* Larger icon */
+        position: absolute; /* Changed to absolute: Positions it precisely on the line */
+        left: 50%; /* Centers the icon horizontally relative to its parent .timeline-item */
+        transform: translateX(-50%); /* Adjust for its own width to perfectly center */
+        z-index: 2; /* Changed to 2: Ensures icons are on top of both the line (0) and the content cards (1) */
+        box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4); /* Stronger shadow */
+        /* Removed flex-shrink: 0; as it's no longer a flex item */
+    }
+
+    .timeline-content {
+        /* Removed flex: 1; as the icon is now absolute, we control width via max-width */
+        background: var(--bg-white);
+        padding: 40px; /* More padding */
+        border-radius: 15px;
+        box-shadow: 0 15px 40px var(--shadow-medium); /* Stronger shadow */
+        position: relative;
+        max-width: 45%; /* Limit width on desktop */
+        z-index: 1; /* Changed to 1: Ensures content card is above the line (0) but below the icon (2) */
+
+        /* Adjusted margins to create space around the absolutely positioned icon */
+        margin-left: calc(50% + (90px / 2) + 25px); /* 50% for center + half icon width + spacing */
+        margin-right: auto; /* Pushes it to the right */
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-left: auto; /* Pushes it to the left */
+        margin-right: calc(50% + (90px / 2) + 25px); /* Half icon width + spacing */
+    }
+
+    .timeline-content::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border: 20px solid transparent; /* Larger arrow */
+        transform: translateY(-50%);
+        z-index: 1; /* Ensures the arrow appears on top of the content card itself */
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content::before {
+        right: -40px; /* Adjust position */
+        border-left-color: var(--bg-white); /* White arrow pointing to the line from the left */
+        border-right-color: transparent; /* Ensure only one side has color */
+    }
+
+    .timeline-item:nth-child(even) .timeline-content::before {
+        left: -40px; /* Adjust position */
+        border-right-color: var(--bg-white); /* White arrow pointing to the line from the right */
+        border-left-color: transparent; /* Ensure only one side has color */
+    }
+
+    .story-highlight {
+        background: linear-gradient(135deg, var(--primary-blue-dark), var(--primary-blue-light));
+        border-radius: 20px;
+        padding: 60px; /* More padding */
+        margin-top: 100px; /* More margin */
+        color: white;
+        box-shadow: 0 20px 50px rgba(26, 54, 93, 0.4); /* Deeper shadow */
+    }
+
+    .highlight-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 60px; /* More gap */
+        align-items: center;
+    }
+
+    .highlight-text h3 {
+        color: white;
+        font-size: 2.2rem; /* Larger */
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+    .highlight-text p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        opacity: 0.9;
+    }
+
+    .highlight-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 30px; /* More gap */
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 25px; /* More padding */
+        background: rgba(255, 255, 255, 0.15); /* Slightly less transparent */
+        border-radius: 12px;
+        backdrop-filter: blur(10px); /* Glassmorphism effect */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-number {
+        display: block;
+        font-size: 3rem; /* Larger */
+        font-weight: 800;
+        color: var(--accent-red-light);
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        opacity: 0.9;
+        font-weight: 500;
+    }
+
+    /* Enhanced Vision Mission Section (Keep these as they are or move to style.css) */
+    .vision-mission-section {
+        background-color: var(--bg-light);
+    }
+
+    .vision-mission-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* Wider cards */
+        gap: 50px; /* More gap */
+        margin-bottom: 80px;
+    }
+
+    .vm-card {
+        background: var(--bg-white);
+        padding: 50px;
+        border-radius: 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 15px 40px var(--shadow-light);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .vm-card:hover {
+        transform: translateY(-15px); /* More prominent lift */
+        box-shadow: 0 25px 50px var(--shadow-medium);
+    }
+
+    .vm-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--accent-red-light), var(--accent-red-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        font-size: 2.8rem; /* Larger icon */
+        color: white;
+        box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+    }
+
+    .vm-card h3 {
+        font-size: 2.2rem; /* Larger heading */
+        margin-bottom: 20px;
+        color: var(--primary-blue-dark);
+        font-weight: 700;
+    }
+    .vm-card p {
+        color: var(--text-light);
+        line-height: 1.7;
+    }
+
+    .vm-decoration {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 6px; /* Thicker decoration */
+        background: linear-gradient(90deg, var(--accent-red-light), var(--primary-blue-dark));
+    }
+
+    /* Enhanced Values Section (Keep these as they are or move to style.css) */
+    .values-section {
+        margin-top: 80px;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller min-width for more columns */
+        gap: 30px;
+    }
+
+    .value-card {
+        background: var(--bg-white);
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 25px var(--shadow-light);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .value-card:hover {
+        transform: translateY(-8px); /* More prominent lift */
+        box-shadow: 0 18px 40px var(--shadow-medium);
+    }
+
+    .value-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-blue-light), var(--primary-blue-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        font-size: 2.2rem;
+        color: white;
+        transition: transform 0.3s ease;
+        box-shadow: 0 5px 15px rgba(26, 54, 93, 0.3);
+    }
+
+    .value-card:hover .value-icon {
+        transform: scale(1.1);
+    }
+
+    .value-card h4 {
+        font-size: 1.5rem; /* Larger */
+        margin-bottom: 15px;
+        color: var(--primary-blue-dark);
+        font-weight: 600;
+    }
+    .value-card p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    /* Certifications Section */
+    .certifications-section {
+        background-color: var(--bg-light);
+    }
+    .certifications-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    .certification-card {
+        background: var(--bg-white);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px var(--shadow-light);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-height: 120px; /* Ensure consistent height for cards */
+    }
+    .certification-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 18px 40px var(--shadow-medium);
+    }
+    /* --- UPDATED: cert-image-container styles --- */
+    .cert-image-container { /* New container for the image */
+        width: 100px; /* Increased width */
+        height: 100px; /* Increased height */
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: white;
+    }
+    .cert-image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        padding: 5px; /* Keep a little padding, adjust if images have internal whitespace */
+    }
+
+    .cert-info h4 {
+        margin: 0 0 5px 0;
+        font-size: 1.3rem;
+        color: var(--primary-blue-dark);
+        font-weight: 600;
+    }
+    .cert-info p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--text-light);
+    }
+
+    .no-cert-message { /* New class for the empty message */
+        grid-column: 1 / -1; 
+        text-align: center;
+        padding: 60px;
+        background: var(--bg-white);
+        border-radius: 20px;
+        box-shadow: 0 10px 25px var(--shadow-light);
+    }
+
+    .no-cert-message i {
+        font-size: 4.5rem;
+        color: var(--accent-red-light);
+        margin-bottom: 25px;
+    }
+
+    .no-cert-message p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Enhanced Team Section (Keep these as they are or move to style.css) */
+    .enhanced-team-section {
+        background: linear-gradient(135deg, var(--bg-light) 0%, #e9ecef 100%);
+    }
+
+    .team-grid-enhanced {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+    }
+
+    .team-member-card-enhanced {
+        background: var(--bg-white);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px var(--shadow-light);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+    }
+
+    .team-member-card-enhanced:hover {
+        transform: translateY(-12px); /* More prominent lift */
+        box-shadow: 0 25px 50px var(--shadow-medium);
+    }
+
+    .member-image-container {
+        position: relative;
+        height: 350px; /* Taller image container */
+        overflow: hidden;
+    }
+
+    .member-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease-out; /* Slower, smoother transition */
+    }
+
+    .team-member-card-enhanced:hover .member-image-container img {
+        transform: scale(1.08); /* More noticeable zoom */
+    }
+
+    .member-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, transparent 40%, rgba(26, 54, 93, 0.85) 100%); /* Deeper gradient */
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .team-member-card-enhanced:hover .member-overlay {
+        opacity: 1;
+    }
+
+    .member-social {
+        color: white;
+        font-size: 2.5rem; /* Larger icon */
+        margin-bottom: 30px; /* More space */
+        cursor: pointer; /* Indicate interactivity */
+    }
+
+    .member-info {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .member-info h4 {
+        font-size: 1.6rem; /* Larger */
+        margin-bottom: 10px;
+        color: var(--primary-blue-dark);
+        font-weight: 700;
+    }
+
+    .member-position {
+        color: var(--accent-red-light);
+        font-weight: 600;
+        font-size: 1.15rem; /* Larger */
+        display: block;
+        margin-bottom: 18px; /* More space */
+    }
+
+    .member-bio {
+        color: var(--text-light);
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+
+    .no-team-message {
+        grid-column: 1 / -1; /* Span full width */
+        text-align: center;
+        padding: 60px;
+        background: var(--bg-white);
+        border-radius: 20px;
+        box-shadow: 0 10px 25px var(--shadow-light);
+    }
+
+    .no-team-message i {
+        font-size: 4.5rem;
+        color: var(--accent-red-light);
+        margin-bottom: 25px;
+    }
+
+    .no-team-message p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .header-content h1 {
+            font-size: 3.5rem;
+        }
+        .header-content p {
+            font-size: 1.3rem;
+        }
+        .highlight-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            text-align: center;
+        }
+        .highlight-stats {
+            flex-direction: row;
+            flex-wrap: wrap; /* Allow wrapping */
+            justify-content: center;
+            gap: 20px; /* Adjust gap */
+        }
+        .stat-item {
+            min-width: 140px; /* Ensure some minimum width */
+            flex-grow: 1; /* Allow growing */
+        }
+        .vision-mission-grid {
+            grid-template-columns: 1fr;
+        }
+        .team-grid-enhanced {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .section-padding {
+            padding: 60px 0;
+        }
+        .section-title h2 {
+            font-size: 2.2rem;
+        }
+        .section-title p {
+            font-size: 1rem;
+        }
+        .header-content h1 {
+            font-size: 2.8rem;
+        }
+        .header-content p {
+            font-size: 1.1rem;
+        }
+        .header-subtitle {
+            font-size: 1rem;
+        }
+        .story-intro h2 {
+            font-size: 2.2rem;
+        }
+        .story-lead {
+            font-size: 1rem;
+        }
+
+        .story-timeline::before {
+            left: 30px; /* Mobile: Move timeline line to left for mobile */
+        }
+        .timeline-item {
+            flex-direction: column !important; /* Stack items vertically */
+            align-items: flex-start; /* Align content to left */
+            margin: 60px 0;
+        }
+        .timeline-icon {
+            margin-left: 0; /* Reset margin from center line */
+            position: absolute; /* Keep absolute */
+            left: 0; /* Align to the new timeline position */
+            top: 0; /* Position icon at the top of its timeline item */
+            transform: translateX(-50%); /* Center on the left line */
+            width: 70px; /* Smaller icon */
+            height: 70px;
+            font-size: 1.8rem;
+        }
+        .timeline-content {
+            /* Adjust margins for mobile where all cards are on one side */
+            margin: 0 0 0 60px; /* Push content right of the left timeline line */
+            max-width: none; /* Remove max-width */
+            padding: 30px;
+            text-align: left; /* Align text left */
+        }
+        .timeline-content::before {
+            display: none; /* Hide the arrow triangles for mobile timeline (looks cleaner) */
+        }
+        .timeline-item:nth-child(odd) .timeline-content { /* On mobile, all cards should be on one side */
+            margin-left: 60px;
+            margin-right: auto;
+        }
+
+        .story-highlight {
+            padding: 40px;
+        }
+        .highlight-text h3 {
+            font-size: 1.8rem;
+        }
+        .highlight-stats {
+            flex-direction: column; /* Stack stats vertically on smaller screens */
+        }
+
+        .vm-card {
+            padding: 40px;
+        }
+        .vm-card h3 {
+            font-size: 1.8rem;
+        }
+        .vm-icon {
+            width: 80px;
+            height: 80px;
+            font-size: 2.2rem;
+        }
+
+        .values-section h2 {
+            font-size: 2.2rem;
+        }
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+        .value-card h4 {
+            font-size: 1.3rem;
+        }
+
+        .certifications-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .team-grid-enhanced {
+            grid-template-columns: 1fr;
+        }
+        .member-image-container {
+            height: 300px; /* Adjust height for mobile */
+        }
+        .member-info h4 {
+            font-size: 1.4rem;
+        }
+        .member-position {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .header-content h1 {
+            font-size: 2rem;
+        }
+        .header-content p {
+            font-size: 0.9rem;
+        }
+        .header-subtitle {
+            font-size: 0.8rem;
+        }
+        .story-timeline::before {
+            left: 20px;
+        }
+        .timeline-icon {
+            left: 0;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        .timeline-content {
+            margin-left: 40px;
+            padding: 25px;
+        }
+        .timeline-content h3 {
+            font-size: 1.4rem;
+        }
+        .highlight-stats {
+            gap: 15px;
+        }
+        .stat-number {
+            font-size: 2.2rem;
+        }
+        .vm-card {
+            padding: 30px;
+        }
+        .vm-card h3 {
+            font-size: 1.6rem;
+        }
+        .vm-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 2rem;
+        }
+        .value-card {
+            padding: 30px;
+        }
+        .value-card h4 {
+            font-size: 1.2rem;
+        }
+        .cert-image-container { /* Adjust for smaller screens */
+            width: 80px; /* Slightly smaller for tiny screens */
+            height: 80px;
+        }
+        .cert-info h4 {
+            font-size: 1.1rem;
+        }
+    }
+
+</style>
+
+<!-- Dynamic Header with Slideshow (no changes needed) -->
+<section class="page-header-slideshow">
+    <div class="slideshow-container">
+        <!-- Add more images as needed. Ensure they are in your static/images folder -->
+        <div class="slide active" style="background-image: url({{ url_for('static', filename='images/1.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/2.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/3.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/4.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/5.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/6.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/7.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/8.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/10.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/11.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/12.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/13.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/14.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/15.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/16.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/17.jpg') }});"></div>
+        <div class="slide" style="background-image: url({{ url_for('static', filename='images/18.jpg') }});"></div>
+    </div>
+    <div class="header-overlay"></div>
+    <div class="container">
+        <div class="header-content fade-in">
+            <h1>About MAROGO Civils Limited</h1>
+            <p>Building Malawi's Future with Integrity and Excellence</p>
+            <div class="header-divider"></div>
+            <span class="header-subtitle">Your Trusted Construction Partner Since 2018</span>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- Enhanced Story Section -->
+<section class="story-section section-padding">
+    <div class="container">
+        <div class="story-intro text-center fade-in">
+            <h2>Our Journey of Excellence</h2>
+            <div class="title-underline"></div>
+            <p class="story-lead">From humble beginnings to industry leadership, discover the story behind MAROGO Civils Limited</p>
+        </div>
+
+        <div class="story-timeline">
+            <div class="timeline-item slide-in-left">
+                <div class="timeline-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="timeline-content">
+                    <h3>2018 - Our Foundation</h3>
+                    <p><strong>MAROGO Civils Limited</strong> was born from a vision to transform Malawi's construction landscape. Officially registered under the Companies Act No. 15 of 2013, we began our journey with unwavering commitment to excellence and integrity.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item slide-in-right">
+                <div class="timeline-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="timeline-content">
+                    <h3>Growth & Recognition</h3>
+                    <p>Through dedication and superior project delivery, we achieved rapid growth and earned our place in the <strong>500 million Kwacha category</strong> by the National Construction Industry Council (NCIC) - a testament to our expanding capabilities and trusted reputation.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item slide-in-left">
+                <div class="timeline-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="timeline-content">
+                    <h3>Industry Leadership</h3>
+                    <p>Today, we stand as a significant player in Malawi's construction industry, not just building structures, but building relationships and contributing to national development with every project we undertake.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="story-highlight slide-up">
+            <div class="highlight-content">
+                <div class="highlight-text">
+                    <h3>Our Mission Today</h3>
+                    <p>We continue to set new benchmarks in quality, efficiency, and sustainability within Malawi's construction landscape. Our classification in the 500 million Kwacha NCIC category reflects our unwavering commitment to excellence and our growing capacity to handle complex projects.</p>
+                </div>
+                <div class="highlight-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500M+</span>
+                        <span class="stat-label">Kwacha Category</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">2018</span>
+                        <span class="stat-label">Established</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Malawian Owned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced Vision, Mission & Values (no changes needed) -->
+<section class="vision-mission-section bg-light section-padding">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Our Foundation</h2>
+            <div class="title-underline"></div>
+            <p>The principles that guide everything we do</p>
+        </div>
+
+        <div class="vision-mission-grid">
+            <div class="vm-card vision-card slide-up">
+                <div class="vm-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>Our Vision</h3>
+                <p>To be the leading construction firm in Malawi and beyond by consistently executing projects with exceptional quality and superior contract management skills.</p>
+                <div class="vm-decoration"></div>
+            </div>
+
+            <div class="vm-card mission-card slide-up" style="transition-delay: 0.2s;">
+                <div class="vm-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Our Mission</h3>
+                <p>To provide the highest level of services in the construction industry, defined by diligence, quality, safety, and a profound respect for environmental protection.</p>
+                <div class="vm-decoration"></div>
+            </div>
+        </div>
+
+        <div class="values-section fade-in">
+            <h2 class="section-title">Our Core Values</h2>
+            <div class="title-underline"></div>
+            <div class="values-grid">
+                <div class="value-card slide-up">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4>Integrity</h4>
+                    <p>Upholding honesty and strong moral principles in all our dealings.</p>
+                </div>
+                <div class="value-card slide-up" style="transition-delay: 0.1s;">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Teamwork</h4>
+                    <p>Collaborating effectively to achieve common goals and deliver superior results.</p>
+                </div>
+                <div class="value-card slide-up" style="transition-delay: 0.2s;">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4>Innovation</h4>
+                    <p>Embracing new technologies and methods to enhance efficiency and quality.</p>
+                </div>
+                <div class="value-card slide-up" style="transition-delay: 0.3s;">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Corporate Citizenship</h4>
+                    <p>Contributing positively to our community and the development of Malawi.</p>
+                </div>
+                <div class="value-card slide-up" style="transition-delay: 0.4s;">
+                    <div class="value-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h4>Efficiency</h4>
+                    <p>Optimizing resources to deliver projects on time and within budget.</p>
+                </div>
+                <div class="value-card slide-up" style="transition-delay: 0.5s;">
+                    <div class="value-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>Customer Satisfaction</h4>
+                    <p>Going above and beyond to meet and exceed client expectations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Certifications Section -->
+<section class="certifications-section section-padding">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Our Qualifications</h2>
+            <div class="title-underline"></div>
+            <p>Officially recognized for quality and capability.</p>
+        </div>
+        <div class="certifications-grid">
+            {% for cert in certifications %}
+            <div class="certification-card slide-up" style="transition-delay: {{ loop.index0 * 0.1 }}s;">
+                {# --- CHANGED: cert-icon div to cert-image-container --- #}
+                <div class="cert-image-container">
+                    {% if cert.image_url %}
+                        <img src="{{ url_for('uploaded_file', filename=cert.image_url) }}" alt="{{ cert.name }} Certificate" loading="lazy">
+                    {% else %}
+                        {# Fallback if no image is uploaded yet, could be a generic icon or placeholder #}
+                        <i class="fas fa-award" style="font-size: 2.5rem; color: var(--accent-red-light);"></i> 
+                    {% endif %}
+                </div>
+                <div class="cert-info">
+                    <h4>{{ cert.name }}</h4>
+                    <p>{{ cert.issuing_body }}</p>
+                </div>
+            </div>
+            {% else %}
+            {# --- CHANGED: class name for empty message --- #}
+            <div class="no-cert-message">
+                <i class="fas fa-file-contract"></i>
+                <p>Our official certifications and qualifications are being updated. Please check back soon.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced Team Section (no changes needed) -->
+<section class="enhanced-team-section section-padding bg-light">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Meet Our Team</h2>
+            <div class="title-underline"></div>
+            <p style="max-width: 700px; margin: 20px auto 0; color: var(--text-light);">The dedicated professionals leading MAROGO Civils to success through expertise, dedication, and shared vision.</p>
+        </div>
+        
+        <div class="team-grid-enhanced">
+            {% for member in team_members %}
+            <div class="team-member-card-enhanced slide-up" style="transition-delay: {{ loop.index0 * 0.1 }}s;">
+                <div class="member-image-container">
+                    <img src="{{ url_for('uploaded_file', filename=member.image_url) }}" alt="{{ member.name }}" loading="lazy">
+                    <div class="member-overlay">
+                        <div class="member-social">
+                            <i class="fas fa-user-tie"></i> {# Example icon. Could be a link to LinkedIn if available #}
+                        </div>
+                    </div>
+                </div>
+                <div class="member-info">
+                    <h4>{{ member.name }}</h4>
+                    <span class="member-position">{{ member.position }}</span>
+                    <p class="member-bio">{{ member.bio }}</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="no-team-message">
+                <i class="fas fa-users"></i>
+                <p>Our team profiles are currently being updated to showcase our dedicated professionals. Please check back soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+    // Slideshow functionality (no changes needed here)
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            if (slides[index]) { // Ensure slide exists
+                slides[index].classList.add('active');
+            }
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+        
+        // Auto-advance slides every 5 seconds
+        if (slides.length > 1) { // Only start slideshow if there's more than one slide
+            setInterval(nextSlide, 5000);
+            showSlide(currentSlide); // Show initial slide
+        } else if (slides.length === 1) {
+            showSlide(0); // Show the single slide if only one exists
+        }
+        
+        // Scroll animations (no changes needed here, as it's general for all animated elements)
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in:not(.visible), .slide-up:not(.visible), .slide-in-left:not(.visible), .slide-in-right:not(.visible)');
+            
+            elements.forEach(element => {
+                // Get the position of the element relative to the viewport
+                const elementTop = element.getBoundingClientRect().top;
+                // Define how much of the element needs to be visible to trigger animation
+                const elementVisible = 100; // Trigger when element is 100px from viewport bottom
+                
+                if (elementTop < (window.innerHeight - elementVisible)) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        // Add scroll event listener
+        window.addEventListener('scroll', animateOnScroll);
+        // Call animateOnScroll once on load to animate elements already in view
+        animateOnScroll();
+    });
+</script>
+
+{% endblock %}

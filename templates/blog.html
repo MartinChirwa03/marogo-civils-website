@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}Blog - MAROGO Civils Limited{% endblock %}
+
+{% block content %}
+<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('static', filename='images/water.webp') }});">
+
+    <div class="container">
+        <h1>From Our Blog</h1>
+        <p>Insights and News from the Construction Industry</p>
+    </div>
+</section>
+
+<section class="blog-page-section section-padding">
+    <div class="container">
+        <div class="blog-grid">
+             {% for post in blog_posts %}
+             <article class="blog-post-card">
+                 <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="fas fa-calendar-alt"></i> {{ post.date_posted.strftime('%B %d, %Y') }}</span>
+                        <span><i class="fas fa-user"></i> By {{ post.author }}</span>
+                    </div>
+                    <h3><a href="{{ url_for('blog_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                    
+                    <!-- === THIS IS THE CORRECTED LINE === -->
+                    <p>{{ post.content | striptags | truncate(200) }}</p>
+
+                    <a href="{{ url_for('blog_post', post_id=post.id) }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                 </div>
+             </article>
+             {% else %}
+             <p class="text-center">No blog posts available.</p>
+             {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+
+
+
+
+

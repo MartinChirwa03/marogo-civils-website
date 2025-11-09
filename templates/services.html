@@ -1,0 +1,206 @@
+{% extends "layout.html" %}
+{% block title %}Our Services - MAROGO Civils Limited{% endblock %}
+
+{% block content %}
+<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('static', filename='images/hero-bg2.jpg') }});">
+    <div class="container fade-in">
+        <h1>Our Comprehensive Services</h1>
+        <p>A Full Spectrum of Engineering and Construction Solutions</p>
+    </div>
+</section>
+
+<section class="services-page-section section-padding">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>What We Do</h2>
+            <div class="title-underline"></div>
+        </div>
+        
+        <div class="service-cards-detailed">
+            {% for service in services %}
+            <a href="{{ url_for('service_detail', slug=service.slug) }}" class="service-card-link slide-up" style="transition-delay: {{ loop.index0 * 0.05 }}s;">
+                <div class="service-detail-card">
+                    <div class="service-icon">
+                        {% if service.image_url %}
+                            <img src="{{ url_for('uploaded_file', filename=service.image_url) }}" alt="{{ service.title }} thumbnail" loading="lazy">
+                        {% else %}
+                            {# Fallback if no image is uploaded for this service #}
+                            <i class="fas fa-tools"></i> 
+                        {% endif %}
+                    </div>
+                    <h3 class="service-title">{{ service.title }}</h3>
+                    <p class="service-description">{{ service.summary }}</p>
+                    <span class="read-more" style="margin-top: 15px;">Learn More <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </a>
+            {% else %}
+            <div class="text-center" style="grid-column: 1 / -1;">
+                <p>Our services list is currently being updated. Please check back soon for more details.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    /* Add styling for the new service card images */
+    .service-cards-detailed {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px; /* Adjust as needed */
+    }
+    
+    /* Make the entire card a clickable link */
+    .service-card-link {
+        text-decoration: none;
+        color: inherit; /* Inherit text color from card */
+        display: block; /* Make the link fill the card area */
+        position: relative;
+    }
+
+    .service-detail-card {
+        background-color: var(--white);
+        padding: 35px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        height: 100%; /* Ensure cards in a row have consistent height */
+        border-bottom: 4px solid transparent; /* Start transparent, filled on hover */
+    }
+    .service-card-link:hover .service-detail-card { /* Apply hover effect to the card itself */
+        transform: translateY(-8px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border-bottom-color: var(--accent-red-light); /* Highlight with accent color on hover */
+    }
+
+    .service-detail-card .service-icon {
+        height: 80px; 
+        width: 80px; 
+        margin-bottom: 20px;
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        background-color: var(--light-gray);
+        padding: 10px; /* Keep padding here for the 'border' effect around the image */
+        border-radius: 50%; /* Makes the *container* circular */
+        transition: background-color 0.3s, color 0.3s;
+        flex-shrink: 0; 
+        overflow: hidden; /* Crucial to clip the image if it exceeds the circle */
+    }
+    .service-card-link:hover .service-icon {
+        background-color: var(--primary-blue-dark);
+        color: var(--white); 
+    }
+    .service-detail-card .service-icon img {
+        width: 100%; /* Make image fill the container's content area */
+        height: 100%; /* Make image fill the container's content area */
+        object-fit: cover; /* Crop to fill the circle, important for circular images */
+        border-radius: 50%; /* Make the image itself circular */
+        transition: transform 0.3s ease; 
+        /* No padding on img, let the parent's padding handle spacing */
+    }
+    .service-card-link:hover .service-icon img {
+        transform: scale(1.05); 
+    }
+
+    .service-detail-card .service-icon .fas { /* Styling for fallback Font Awesome icon */
+        font-size: 3.2rem; 
+        color: var(--accent-red-light); 
+        transition: color 0.3s ease;
+    }
+    .service-card-link:hover .service-icon .fas {
+        color: var(--white); 
+    }
+
+
+    .service-detail-card .service-title {
+        font-size: 1.6rem;
+        color: var(--primary-blue-dark);
+        margin-top: 0;
+        margin-bottom: 10px;
+        line-height: 1.3;
+        font-weight: 700;
+    }
+    .service-detail-card .service-description {
+        font-size: 1em;
+        color: #666;
+        line-height: 1.7;
+        flex-grow: 1; 
+    }
+    .read-more {
+        color: var(--accent-red-light);
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: color 0.3s ease, padding-left 0.3s ease;
+    }
+    .read-more:hover {
+        color: var(--primary-blue-dark); 
+        padding-left: 5px; 
+    }
+    .read-more i {
+        transition: transform 0.3s;
+    }
+    .read-more:hover i {
+        transform: translateX(5px);
+    }
+    
+    @media (max-width: 768px) {
+        .service-cards-detailed {
+            grid-template-columns: 1fr;
+        }
+        .service-detail-card {
+            padding: 30px;
+            border-bottom: 2px solid var(--border-color); 
+        }
+        .service-card-link:hover .service-detail-card {
+            border-bottom-color: var(--accent-red-light); 
+        }
+        .service-card-link:last-child .service-detail-card {
+            border-bottom: none;
+        }
+
+        .service-detail-card .service-icon {
+            height: 70px;
+            width: 70px;
+            padding: 8px;
+        }
+        .service-detail-card .service-icon .fas {
+            font-size: 2.8rem;
+        }
+        .service-detail-card .service-title {
+            font-size: 1.4rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .service-detail-card {
+            padding: 25px;
+        }
+        .service-detail-card .service-icon {
+            height: 60px;
+            width: 60px;
+            padding: 5px;
+        }
+        .service-detail-card .service-icon .fas {
+            font-size: 2.5rem;
+        }
+        .service-detail-card .service-title {
+            font-size: 1.3rem;
+        }
+        .service-detail-card .service-description {
+            font-size: 0.9em;
+        }
+    }
+
+</style>
+{% endblock %}
