@@ -209,4 +209,20 @@ document.addEventListener('DOMContentLoaded', function() {
             startCarousel(); // Initial start
         }
     }
+
+    // --- START: NEW PASSWORD TOGGLE SCRIPT ---
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    if (togglePassword && password) {
+        togglePassword.addEventListener('click', function (e) {
+            // Toggle the type attribute of the password field
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Toggle the icon class from 'fa-eye' to 'fa-eye-slash' and back
+            this.classList.toggle('fa-eye-slash');
+        });
+    }
+    // --- END: NEW PASSWORD TOGGLE SCRIPT ---
 });
