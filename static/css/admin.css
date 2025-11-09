@@ -38,7 +38,7 @@ body {
     display: flex;
     flex-direction: column;
 }
-/* <<< NEW: Styles for the branded sidebar header >>> */
+
 .sidebar-header {
     padding: 20px;
     text-align: center;
@@ -53,11 +53,12 @@ body {
     gap: 10px;
 }
 .sidebar-logo {
-    height: 60px; /* Adjust size as needed */
+    height: 60px;
     width: auto;
-    /* This CSS trick makes your color logo appear white on the dark background */
-    filter: brightness(0) invert(1);
+    /* The line below was removed to fix the blank logo issue */
+    /* filter: brightness(0) invert(1); */
     opacity: 0.9;
+    border-radius: 4px; /* Optional: adds slightly rounded corners to your logo */
 }
 .sidebar-header span {
     font-weight: 700;
@@ -67,7 +68,7 @@ body {
 
 .admin-nav {
     flex-grow: 1;
-    margin-top: 10px; /* Add some space below the header */
+    margin-top: 10px;
 }
 .admin-nav .nav-link {
     color: var(--sidebar-text);
@@ -260,7 +261,7 @@ form label {
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
-    text-align: left; /* Ensure labels are left-aligned */
+    text-align: left;
 }
 form input[type="text"],
 form input[type="password"],
@@ -287,7 +288,7 @@ form p.form-hint {
     margin-top: -10px;
     margin-bottom: 20px;
     line-height: 1.4;
-    text-align: left; /* Ensure hints are left-aligned */
+    text-align: left;
 }
 
 /* Login Page Specific */
@@ -305,10 +306,9 @@ form p.form-hint {
     background-color: white;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     border-radius: 8px;
-    text-align: center; /* <<< UPDATED */
+    text-align: center;
 }
 
-/* <<< NEW: Styles for the logo on the login page >>> */
 .login-logo {
     margin-bottom: 30px;
 }
@@ -339,29 +339,6 @@ form p.form-hint {
     background-color: #b91c1c;
 }
 
-/* TinyMCE Dark Mode Fix (if applicable) */
-.tox-tinymce {
-    border-radius: 4px !important;
-}
-
-/* --- Icon Select Dropdown Styles --- */
-.icon-select {
-    display: inline-block;
-    width: auto;
-    min-width: 300px;
-    vertical-align: middle;
-}
-.icon-preview {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 15px;
-    font-size: 1.5em;
-    color: var(--primary-blue);
-    width: 25px;
-    text-align: center;
-}
-
-/* === START: NEW PASSWORD TOGGLE STYLES === */
 .password-wrapper {
     position: relative;
     display: flex;
@@ -370,10 +347,9 @@ form p.form-hint {
 
 .password-wrapper input[type="password"],
 .password-wrapper input[type="text"] {
-    /* Use the existing styles, but add padding for the icon */
     width: 100%;
-    padding: 10px 40px 10px 10px; /* Right padding is key */
-    margin-bottom: 0; /* The wrapper's margin-bottom will handle spacing */
+    padding: 10px 40px 10px 10px;
+    margin-bottom: 0;
 }
 
 .password-wrapper i {
@@ -387,4 +363,3 @@ form p.form-hint {
 .password-wrapper i:hover {
     color: #333;
 }
-/* === END: NEW PASSWORD TOGGLE STYLES === */
