@@ -263,6 +263,7 @@ form label {
     text-align: left; /* Ensure labels are left-aligned */
 }
 form input[type="text"],
+form input[type="password"],
 form input[type="number"],
 form input[type="file"],
 form textarea,
@@ -359,3 +360,31 @@ form p.form-hint {
     width: 25px;
     text-align: center;
 }
+
+/* === START: NEW PASSWORD TOGGLE STYLES === */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    /* Use the existing styles, but add padding for the icon */
+    width: 100%;
+    padding: 10px 40px 10px 10px; /* Right padding is key */
+    margin-bottom: 0; /* The wrapper's margin-bottom will handle spacing */
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.password-wrapper i:hover {
+    color: #333;
+}
+/* === END: NEW PASSWORD TOGGLE STYLES === */
