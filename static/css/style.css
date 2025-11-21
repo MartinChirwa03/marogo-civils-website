@@ -315,10 +315,10 @@ h1, h2, h3, h4, h5, h6 {
     background-attachment: fixed;
 }
 @keyframes background-slide {
-    0%, 25% { background-image: url('../images/water.webp'); }
-    26%, 50% { background-image: url('../images/hero-bg2.jpg'); }
-    51%, 75% { background-image: url('../images/civil.jpg'); }
-    76%, 100% { background-image: url('../images/about-bg1.jpg'); }
+    0%, 25% { background-image: url('../images/34.jpg'); }
+    26%, 50% { background-image: url('../images/18.jpg'); }
+    51%, 75% { background-image: url('../images/111.jpg'); }
+    76%, 100% { background-image: url('../images/222.jpg'); }
 }
 .hero-overlay {
     position: absolute;

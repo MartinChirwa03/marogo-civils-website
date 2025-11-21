@@ -2,7 +2,7 @@
 {% block title %}{{ service.title }} - Our Services{% endblock %}
 
 {% block content %}
-<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('uploaded_file', filename=service.header_image_url) if service.header_image_url else url_for('static', filename='images/civil.jpg') }});">
+<section class="page-header" style="background-image: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url({{ url_for('uploaded_file', filename=service.header_image_url) if service.header_image_url else url_for('static', filename='images/17.jpg') }});">
     <div class="container fade-in">
         <p style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Our Services</p>
         <h1>{{ service.title }}</h1>
